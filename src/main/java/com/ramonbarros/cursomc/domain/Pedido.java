@@ -2,6 +2,8 @@ package com.ramonbarros.cursomc.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -9,7 +11,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -33,6 +37,9 @@ public class Pedido implements Serializable{
 	@JoinColumn(name="enderecoDeEntrega_id")
 	private Endereco enderecoDeEnterega;
 	
+	@ManyToMany
+	private Set<ItemPedido> itens = new HashSet<>();
+	
 	public Pedido() {
 	}
 	
@@ -43,8 +50,6 @@ public class Pedido implements Serializable{
 		this.cliente = cliente;
 		this.enderecoDeEnterega = enderecoDeEnterega;
 	}
-
-
 
 	public Integer getId() {
 		return id;
@@ -89,6 +94,15 @@ public class Pedido implements Serializable{
 
 	public void setEnderecoDeEnterega(Endereco enderecoDeEnterega) {
 		this.enderecoDeEnterega = enderecoDeEnterega;
+	}
+
+	@OneToMany(mappedBy="id.pedido")
+	public Set<ItemPedido> getItens() {
+		return itens;
+	}
+
+	public void setItens(Set<ItemPedido> itens) {
+		this.itens = itens;
 	}
 
 	@Override
