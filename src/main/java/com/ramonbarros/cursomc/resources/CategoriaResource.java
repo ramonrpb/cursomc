@@ -1,9 +1,9 @@
 package com.ramonbarros.cursomc.resources;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.ramonbarros.cursomc.CategoriaDTO;
 import com.ramonbarros.cursomc.domain.Categoria;
 import com.ramonbarros.cursomc.services.CategoriaService;
 
@@ -48,5 +49,11 @@ public class CategoriaResource {
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
-	} 
+	}
+	
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<List<CategoriaDTO>> findAll() {
+		List<CategoriaDTO> lista= service.findAll();
+		return ResponseEntity.ok().body(lista);
+	}
 }
