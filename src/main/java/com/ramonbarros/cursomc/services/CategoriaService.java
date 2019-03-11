@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
@@ -50,5 +53,10 @@ public class CategoriaService {
 		List<Categoria> lista = repo.findAll();
 		List<CategoriaDTO> listaDTO = lista.stream().map(cat -> new CategoriaDTO(cat)).collect(Collectors.toList());
 		return listaDTO;
+	}
+	
+	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String directions){
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(directions), orderBy);
+		return repo.findAll(pageRequest);
 	}
 }
