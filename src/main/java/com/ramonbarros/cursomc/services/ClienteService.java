@@ -13,8 +13,14 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import com.ramonbarros.cursomc.ClienteDTO;
+import com.ramonbarros.cursomc.ClienteNewDTO;
+import com.ramonbarros.cursomc.domain.Cidade;
 import com.ramonbarros.cursomc.domain.Cliente;
+import com.ramonbarros.cursomc.domain.Endereco;
+import com.ramonbarros.cursomc.domain.enums.TipoCliente;
+import com.ramonbarros.cursomc.repositories.CidadeRepository;
 import com.ramonbarros.cursomc.repositories.ClienteRepository;
+import com.ramonbarros.cursomc.repositories.EnderecoRepository;
 import com.ramonbarros.cursomc.services.exceptions.DataIntegrityException;
 import com.ramonbarros.cursomc.services.exceptions.ObjectNotFoundException;
 
@@ -23,7 +29,13 @@ public class ClienteService {
 	
 	@Autowired
 	private ClienteRepository repo;
-
+	
+	@Autowired
+	private CidadeRepository cidadeRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
+	
 	public Cliente find(Integer id) {
 		Optional<Cliente> obj = ((CrudRepository<Cliente, Integer>) repo).findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
@@ -45,6 +57,13 @@ public class ClienteService {
 		}
 	}
 	
+	public Cliente insert(Cliente cliente) {
+		cliente.setId(null);
+		cliente = repo.save(cliente);
+		enderecoRepository.saveAll(cliente.getEnderecos());
+		return cliente;
+	}
+	
 	public List<ClienteDTO> findAll(){
 		List<Cliente> lista = repo.findAll();
 		List<ClienteDTO> listaDTO = lista.stream().map(cat -> new ClienteDTO(cat)).collect(Collectors.toList());
@@ -58,6 +77,21 @@ public class ClienteService {
 	
 	public Cliente fromDTO(ClienteDTO clienteDTO) {
 		return new Cliente(clienteDTO.getId(), clienteDTO.getNome(), clienteDTO.getEmail(), null, null);
+	}
+	
+	public Cliente fromDTO(ClienteNewDTO clienteDTO) {
+		Cliente cliente = new Cliente(null, clienteDTO.getNome(), clienteDTO.getEmail(), clienteDTO.getCpfOuCnpj(), TipoCliente.toEnum(clienteDTO.getTipo()));
+		Optional<Cidade> cidade = cidadeRepository.findById(clienteDTO.getCidadeId());
+		Endereco endereco = new Endereco(null, clienteDTO.getLogradouro(), clienteDTO.getNumero(), clienteDTO.getComplemento(), clienteDTO.getBairro(), clienteDTO.getCep(), cliente, cidade.get());
+		cliente.getEnderecos().add(endereco);
+		cliente.getTelefones().add(clienteDTO.getTelefone1());
+		if(null != clienteDTO.getTelefone2()) {
+			cliente.getTelefones().add(clienteDTO.getTelefone2());
+		}
+		if(null != clienteDTO.getTelefone3()) {
+			cliente.getTelefones().add(clienteDTO.getTelefone3());
+		}
+		return cliente;
 	}
 	
 	private void updateData(Cliente novoCliente, Cliente cliente) {
