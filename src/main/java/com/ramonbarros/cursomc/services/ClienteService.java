@@ -12,12 +12,12 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
-import com.ramonbarros.cursomc.ClienteDTO;
-import com.ramonbarros.cursomc.ClienteNewDTO;
 import com.ramonbarros.cursomc.domain.Cidade;
 import com.ramonbarros.cursomc.domain.Cliente;
 import com.ramonbarros.cursomc.domain.Endereco;
 import com.ramonbarros.cursomc.domain.enums.TipoCliente;
+import com.ramonbarros.cursomc.dto.ClienteDTO;
+import com.ramonbarros.cursomc.dto.ClienteNewDTO;
 import com.ramonbarros.cursomc.repositories.CidadeRepository;
 import com.ramonbarros.cursomc.repositories.ClienteRepository;
 import com.ramonbarros.cursomc.repositories.EnderecoRepository;

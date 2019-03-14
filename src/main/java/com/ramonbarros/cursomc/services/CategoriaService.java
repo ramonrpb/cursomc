@@ -12,8 +12,8 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
-import com.ramonbarros.cursomc.CategoriaDTO;
 import com.ramonbarros.cursomc.domain.Categoria;
+import com.ramonbarros.cursomc.dto.CategoriaDTO;
 import com.ramonbarros.cursomc.repositories.CategoriaRepository;
 import com.ramonbarros.cursomc.services.exceptions.DataIntegrityException;
 import com.ramonbarros.cursomc.services.exceptions.ObjectNotFoundException;

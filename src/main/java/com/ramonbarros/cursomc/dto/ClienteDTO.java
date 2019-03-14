@@ -1,4 +1,4 @@
-package com.ramonbarros.cursomc;
+package com.ramonbarros.cursomc.dto;
 
 import java.io.Serializable;
 
