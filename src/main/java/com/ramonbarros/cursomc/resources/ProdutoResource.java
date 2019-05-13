@@ -43,7 +43,7 @@ public class ProdutoResource {
 		List<Integer> ids = URL.decodeIntList(categorias);
 		String nomeDecoded = URL.decodeParam(nome);
 		Page<Produto> lista= service.search(nomeDecoded, ids, page, linesPerPage, orderBy, directions);
-		Page<ProdutoDTO> listaDTO = lista.map(cat -> new ProdutoDTO(cat));
+		Page<ProdutoDTO> listaDTO = lista.map(prod -> new ProdutoDTO(prod));
 		return ResponseEntity.ok().body(listaDTO);
 	}
 }
