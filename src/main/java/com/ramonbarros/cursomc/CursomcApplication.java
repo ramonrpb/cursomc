@@ -15,7 +15,8 @@ public class CursomcApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		
+//		parei na aula 54
+//		Continuar o desenvolvimento a partir da aula 55
 	}
 
 	
