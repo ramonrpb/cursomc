@@ -72,7 +72,8 @@ public class PedidoService {
 		
 		//Teste local para formatação de pedido para ser enviado por email.
 		System.out.println(pedido);
-		emailService.sendOrderConfirmationEmail(pedido);
+//		emailService.sendOrderConfirmationEmail(pedido);
+		emailService.sendOrderConfirmationHtmlEmail(pedido);
 		
 		return pedido;
 	}
