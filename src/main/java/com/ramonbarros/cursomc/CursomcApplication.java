@@ -17,6 +17,7 @@ public class CursomcApplication implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 //		parei na aula 54
 //		Continuar o desenvolvimento a partir da aula 55
+//		Pulei para a aula 59
 	}
 
 	

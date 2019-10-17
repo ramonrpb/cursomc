@@ -12,6 +12,7 @@ import com.ramonbarros.cursomc.domain.ItemPedido;
 import com.ramonbarros.cursomc.domain.PagamentoComBoleto;
 import com.ramonbarros.cursomc.domain.Pedido;
 import com.ramonbarros.cursomc.domain.enums.EstadoPagamento;
+import com.ramonbarros.cursomc.repositories.ClienteRepository;
 import com.ramonbarros.cursomc.repositories.ItemPedidoRepository;
 import com.ramonbarros.cursomc.repositories.PagamentoRepository;
 import com.ramonbarros.cursomc.repositories.PedidoRepository;
@@ -35,6 +36,9 @@ public class PedidoService {
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 	
+	@Autowired
+	private ClienteService clienteService;
+	
 	public Pedido find(Integer id) {
 		Optional<Pedido> obj = ((CrudRepository<Pedido, Integer>) repo).findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
@@ -45,6 +49,7 @@ public class PedidoService {
 	public Pedido insert(Pedido pedido) {
 		pedido.setId(null);
 		pedido.setInstante(new Date());
+		pedido.setCliente(clienteService.find(pedido.getCliente().getId()));
 		pedido.getPagamento().setEstado(EstadoPagamento.PENDENTE);
 		pedido.getPagamento().setPedido(pedido);
 		if(pedido.getPagamento() instanceof PagamentoComBoleto) {
@@ -56,10 +61,15 @@ public class PedidoService {
 		
 		for(ItemPedido ip : pedido.getItens()) {
 			ip.setDesconto(0.0);
+			ip.setProduto(produtoService.find(ip.getProduto().getId()));
 			ip.setPreco(produtoService.find(ip.getProduto().getId()).getPreco());
 			ip.setPedido(pedido);
 		}
 		itemPedidoRepository.saveAll(pedido.getItens());
+		
+		//Teste local para formatação de pedido para ser enviado por email.
+		System.out.println(pedido);
+		
 		return pedido;
 	}
 }
