@@ -39,6 +39,9 @@ public class PedidoService {
 	@Autowired
 	private ClienteService clienteService;
 	
+	@Autowired
+	private EmailService emailService;
+	
 	public Pedido find(Integer id) {
 		Optional<Pedido> obj = ((CrudRepository<Pedido, Integer>) repo).findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
@@ -69,6 +72,7 @@ public class PedidoService {
 		
 		//Teste local para formatação de pedido para ser enviado por email.
 		System.out.println(pedido);
+		emailService.sendOrderConfirmationEmail(pedido);
 		
 		return pedido;
 	}
